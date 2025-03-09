@@ -19,15 +19,14 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get(
-        'https://api.themoviedb.org/3/configuration',
-        {
-          headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${import.meta.env.VITE_MOVIE_DB_API_KEY}`,
-          },
-        }
-      );
+      const apiUrl = import.meta.env.VITE_TMDB_BASE_URL;
+      const apiKey = import.meta.env.VITE_MOVIE_DB_API_KEY;
+      const response = await axios.get(`${apiUrl}/configuration`, {
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
       this.data = response.data;
     } catch (err) {
       this.error = err.message;
