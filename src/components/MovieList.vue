@@ -3,11 +3,12 @@
     <h1 class="text-2xl font-bold mb-4 text-center mt-2">Popular Movies</h1>
 
     <!-- Search field -->
-    <div class="w-screen flex justify-center">
+    <div className="search-container">
       <input
         v-model="searchQuery"
-        placeholder="🔍 Search for a movie..."
-        class="w-full max-w-3xl p-3 pl-10 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
+        @input="handleSearch"
+        placeholder="Sök efter film..."
+        class="search-input"
       />
     </div>
 
@@ -146,8 +147,31 @@ export default {
 }
 
 /* Search Field Styling */
-.search-field {
+.search-container {
+  width: 100%;
   display: flex;
-  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--tertiary-color);
+  padding: 10px;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--primary-color);
+}
+.search-input::placeholder {
+  color: var(--primary-color);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--tertiary-color); /* Change this to your preferred color */
+  box-shadow: 0 0 16px rgba(144, 206, 161, 0.6); /* A greenish glow */
 }
 </style>
