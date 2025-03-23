@@ -1,19 +1,18 @@
-import axios from 'axios';
-const apiKey = import.meta.env.VITE_MOVIE_DB_API_KEY;
-const apiUrl = import.meta.env.VITE_TMDB_BASE_URL;
+const API_KEY = import.meta.env.VITE_MOVIE_DB_API_KEY;
+const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
 
-export const getPopularMovies = async (page = 1) => {
-  try {
-    const response = await axios.get(`${apiUrl}/movie/popular`, {
-      params: {
-        api_key: apiKey,
-        language: 'en-US',
-        page: page,
-      },
-    });
-    return response.data.results;
-  } catch (error) {
-    console.error('Failed to fetch movies:', error);
-    return [];
-  }
-};
+export async function getPopularMovies(page = 1) {
+  const response = await fetch(
+    `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`
+  );
+  const data = await response.json();
+  return data.results;
+}
+
+export async function searchMovies(query) {
+  const response = await fetch(
+    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`
+  );
+  const data = await response.json();
+  return data.results;
+}
