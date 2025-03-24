@@ -1,55 +1,55 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4 text-center mt-2">Popular Movies</h1>
-
-    <!-- Search field -->
-    <div class="search-container">
-      <input
-        v-model="searchQuery"
-        @input="handleSearch"
-        placeholder="Sök efter film..."
-        class="search-input"
-      />
-    </div>
-
-    <div class="container">
-      <!-- Pagination Controls -->
-      <Button
-        @click="prevPage"
-        text="Previous"
-      />
-
-      <!-- Movies Grid -->
-      <div class="flex flex-wrap gap-6 justify-center items-center">
-        <div
-          v-for="movie in displayedMovies"
-          :key="movie.id"
-          class="rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-4 text-center"
-        >
-          <RouterLink :to="'/movie/' + movie.id">
-            <img
-              :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
-              :alt="movie.title"
-              class="movie-poster"
-            />
-            <h2 class="movie-title">{{ movie.title }}</h2>
-          </RouterLink>
-        </div>
-      </div>
-
-      <!-- Pagination Controls -->
-      <Button
-        @click="nextPage"
-        text="Next"
-      />
-    </div>
-    <div class="page-indicator">Page {{ currentPage }}</div>
+  <div class="search-container">
+    <input
+      v-model="searchQuery"
+      @input="handleSearch"
+      placeholder="Sök efter film..."
+      class="search-input"
+    />
   </div>
+  <div class="movie-container">
+    <Button
+      class="desktop-buttons"
+      @click="prevPage"
+      text="Previous"
+    />
+    <div class="movie-grid-container">
+      <div
+        v-for="movie in displayedMovies"
+        :key="movie.id"
+        class="movie-card"
+      >
+        <RouterLink :to="'/movie/' + movie.id">
+          <img
+            :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
+            :alt="movie.title"
+            class="movie-poster"
+          />
+          <h2 class="movie-title">{{ movie.title }}</h2>
+        </RouterLink>
+      </div>
+    </div>
+    <Button
+      class="desktop-buttons"
+      @click="nextPage"
+      text="Next"
+    />
+  </div>
+  <div class="mobile-buttons">
+    <Button
+      @click="prevPage"
+      text="Previous"
+    /><Button
+      @click="nextPage"
+      text="Next"
+    />
+  </div>
+  <div class="page-indicator">Page {{ currentPage }}</div>
 </template>
 
 <script>
 import { getPopularMovies, searchMovies } from '../services/tmdb'; // Lägg till searchMovies-funktionen
-import Button from '../components/Button.vue';
+import Button from './Button.vue';
 
 export default {
   components: {
@@ -129,51 +129,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem;
-}
-
-.movie-poster {
-  width: 200px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.movie-title {
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 2px;
-  color: var(--tertiary-color);
-}
-
-.flex-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 24px;
-}
-
-/* Page Indicator Styling */
-.page-indicator {
-  padding: 10px 16px;
-  background: var(--tertiary-color);
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--primary-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
 /* Search Field Styling */
 .search-container {
   width: 100%;
@@ -182,7 +137,6 @@ export default {
   align-items: center;
   padding: 0 20px;
 }
-
 .search-input {
   width: 100%;
   background: var(--tertiary-color);
@@ -196,37 +150,75 @@ export default {
 .search-input::placeholder {
   color: var(--primary-color);
 }
-
 .search-input:focus {
   outline: none;
-  border-color: var(--tertiary-color); /* Change this to your preferred color */
-  box-shadow: 0 0 16px rgba(144, 206, 161, 0.6); /* A greenish glow */
+  border-color: var(--tertiary-color);
+  box-shadow: 0 0 16px rgba(144, 206, 161, 0.6);
+}
+
+/* Movie Styling */
+.movie-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+.movie-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-around;
+}
+.movie-card a {
+  text-decoration: none;
+}
+.movie-poster {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.movie-title {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 2px;
+  color: var(--tertiary-color);
+}
+
+/* Buttons Styling */
+.desktop-buttons {
+  display: block;
+}
+.mobile-buttons {
+  display: none;
+}
+
+/* Page Indicator Styling */
+.page-indicator {
+  padding: 0.3rem 0;
+  background: var(--tertiary-color);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 @media (max-width: 1024px) {
-  /* Reduce padding and margins to fit better on smaller screens */
-  .container {
-    margin: 0;
-    flex-wrap: wrap;
+  .desktop-buttons {
+    display: none;
   }
-
-  .search-container {
-    padding: 0 10px;
-  }
-
-  .movie-poster {
-    width: 100px;
-    height: 150px;
-  }
-
-  .movie-title {
-    font-size: 0.9rem;
-    max-width: 100px;
-  }
-
-  /* Adjust gap in the movie grid for smaller screens */
-  .flex-wrap {
-    gap: 10px;
+  .mobile-buttons {
+    display: block;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3rem;
   }
 }
 </style>
