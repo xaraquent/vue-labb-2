@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold mb-4 text-center mt-2">Popular Movies</h1>
 
     <!-- Search field -->
-    <div className="search-container">
+    <div class="search-container">
       <input
         v-model="searchQuery"
         @input="handleSearch"
@@ -14,13 +14,10 @@
 
     <div class="container">
       <!-- Pagination Controls -->
-      <button
+      <Button
         @click="prevPage"
-        :disabled="currentPage === 1 || isSearching"
-        class="button disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Previous
-      </button>
+        text="Previous"
+      />
 
       <!-- Movies Grid -->
       <div class="flex flex-wrap gap-6 justify-center items-center">
@@ -29,25 +26,24 @@
           :key="movie.id"
           class="rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-4 text-center"
         >
-          <img
-            :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
-            :alt="movie.title"
-            class="movie-poster"
-          />
-          <div class="p-2">
-            <h2 class="movie-title">{{ movie.title }}</h2>
-          </div>
+          <RouterLink :to="'/movie/' + movie.id">
+            <img
+              :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
+              :alt="movie.title"
+              class="movie-poster"
+            />
+            <div class="p-2">
+              <h2 class="movie-title">{{ movie.title }}</h2>
+            </div>
+          </RouterLink>
         </div>
       </div>
 
       <!-- Pagination Controls -->
-      <button
+      <Button
         @click="nextPage"
-        :disabled="isSearching"
-        class="button"
-      >
-        Next
-      </button>
+        text="Next"
+      />
     </div>
     <div class="page-indicator">Page {{ currentPage }}</div>
   </div>
@@ -55,8 +51,12 @@
 
 <script>
 import { getPopularMovies, searchMovies } from '../services/tmdb'; // Lägg till searchMovies-funktionen
+import Button from '../components/Button.vue';
 
 export default {
+  components: {
+    Button,
+  },
   data() {
     return {
       movies: [], // Filmer från populära API:et
@@ -86,7 +86,7 @@ export default {
       }
     },
     async handleSearch() {
-      if (this.searchQuery.length > 2) {
+      if (this.searchQuery.length > 0) {
         this.isSearching = true;
         this.searchResults = await searchMovies(this.searchQuery); // Hämta sökresultat från API
       } else {
@@ -173,5 +173,32 @@ export default {
   outline: none;
   border-color: var(--tertiary-color); /* Change this to your preferred color */
   box-shadow: 0 0 16px rgba(144, 206, 161, 0.6); /* A greenish glow */
+}
+
+@media (max-width: 1024px) {
+  /* Reduce padding and margins to fit better on smaller screens */
+  .container {
+    margin: 0;
+    flex-wrap: wrap;
+  }
+
+  .search-container {
+    padding: 0 10px;
+  }
+
+  .movie-poster {
+    width: 100px;
+    height: 150px;
+  }
+
+  .movie-title {
+    font-size: 0.9rem;
+    max-width: 100px;
+  }
+
+  /* Adjust gap in the movie grid for smaller screens */
+  .flex-wrap {
+    gap: 10px;
+  }
 }
 </style>

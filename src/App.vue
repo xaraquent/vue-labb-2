@@ -1,7 +1,7 @@
 <script setup>
-import MovieList from './components/MovieList.vue';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
-    <MovieList />
+  <RouterView />
 </template>
