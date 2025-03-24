@@ -32,9 +32,7 @@
               :alt="movie.title"
               class="movie-poster"
             />
-            <div class="p-2">
-              <h2 class="movie-title">{{ movie.title }}</h2>
-            </div>
+            <h2 class="movie-title">{{ movie.title }}</h2>
           </RouterLink>
         </div>
       </div>
@@ -70,10 +68,30 @@ export default {
     await this.fetchMovies();
   },
   methods: {
+    getVisibleMoviesCount() {
+      const cardWidth = 200; // Anta att varje filmkort är 200px brett
+      const gap = 24; // Mellanrum mellan kort
+      const buttons = 70;
+      const containerWidth = window.innerWidth; // Bredden på skärmen
+      const cardHeight = 300; // Antal rader du vill visa
+      const containerHeight = window.innerHeight;
+
+      const moviesPerRow = Math.floor(
+        containerWidth / (cardWidth + gap + buttons)
+      );
+      const rowCount = Math.floor(
+        containerHeight / (cardHeight + gap + buttons)
+      );
+
+      return moviesPerRow * rowCount; // Totalt antal filmer som får plats
+    },
     async fetchMovies() {
-      if (this.isSearching) return; // Hämta inte populära filmer om vi söker
+      if (this.isSearching) return;
+
+      const visibleMovies = this.getVisibleMoviesCount(); // Beräkna synliga filmer
       const newMovies = await getPopularMovies(this.currentPage);
-      this.movies = newMovies.slice(0, 14);
+
+      this.movies = newMovies.slice(0, visibleMovies);
     },
     async nextPage() {
       this.currentPage++;
@@ -100,6 +118,13 @@ export default {
       return this.isSearching ? this.searchResults : this.movies;
     },
   },
+  mounted() {
+    window.addEventListener('resize', this.fetchMovies);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('resize', this.fetchMovies);
+  },
 };
 </script>
 
@@ -110,6 +135,7 @@ export default {
   align-items: center;
   margin: 2rem;
 }
+
 .movie-poster {
   width: 200px;
   height: 300px;
@@ -125,6 +151,8 @@ export default {
   font-size: 1rem;
   font-weight: 600;
   text-align: center;
+  padding: 2px;
+  color: var(--tertiary-color);
 }
 
 .flex-wrap {
