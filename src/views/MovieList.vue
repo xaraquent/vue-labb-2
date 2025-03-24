@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <h1 class="title">Popular Movies</h1>
-
-    <!-- Search field -->
     <div class="search-container">
       <input
         v-model="searchQuery"
@@ -11,7 +9,6 @@
         class="search-input"
       />
     </div>
-
     <div class="movie-container">
       <Button
         class="desktop-buttons"
@@ -22,7 +19,7 @@
         <div
           v-for="movie in displayedMovies"
           :key="movie.id"
-          class="rounded-xl shadow-lg overflow-hidden flex flex-col items-center p-4 text-center"
+          class="movie-card"
         >
           <RouterLink :to="'/movie/' + movie.id">
             <img
@@ -34,8 +31,6 @@
           </RouterLink>
         </div>
       </div>
-
-      <!-- Pagination Controls -->
       <Button
         class="desktop-buttons"
         @click="nextPage"
@@ -141,6 +136,7 @@ export default {
   margin: 1rem 0;
   text-align: center;
 }
+
 /* Search Field Styling */
 .search-container {
   width: 100%;
@@ -149,7 +145,6 @@ export default {
   align-items: center;
   padding: 0 20px;
 }
-
 .search-input {
   width: 100%;
   background: var(--tertiary-color);
@@ -163,7 +158,6 @@ export default {
 .search-input::placeholder {
   color: var(--primary-color);
 }
-
 .search-input:focus {
   outline: none;
   border-color: var(--tertiary-color);
@@ -177,20 +171,21 @@ export default {
   align-items: center;
   margin: 2rem;
 }
-
 .movie-grid-container {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: space-around;
 }
+.movie-card a {
+  text-decoration: none;
+}
 .movie-poster {
   width: 200px;
   height: 300px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 0.5rem;
 }
-
 .movie-title {
   max-width: 200px;
   white-space: nowrap;
@@ -203,10 +198,10 @@ export default {
   color: var(--tertiary-color);
 }
 
+/* Buttons Styling */
 .desktop-buttons {
   display: block;
 }
-
 .mobile-buttons {
   display: none;
 }
