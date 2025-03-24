@@ -1,6 +1,6 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4 text-center mt-2">Popular Movies</h1>
+  <div class="container">
+    <h1 class="title">Popular Movies</h1>
 
     <!-- Search field -->
     <div class="search-container">
@@ -12,15 +12,13 @@
       />
     </div>
 
-    <div class="container">
-      <!-- Pagination Controls -->
+    <div class="movie-container">
       <Button
+        class="desktop-buttons"
         @click="prevPage"
         text="Previous"
       />
-
-      <!-- Movies Grid -->
-      <div class="flex flex-wrap gap-6 justify-center items-center">
+      <div class="movie-grid-container">
         <div
           v-for="movie in displayedMovies"
           :key="movie.id"
@@ -39,6 +37,16 @@
 
       <!-- Pagination Controls -->
       <Button
+        class="desktop-buttons"
+        @click="nextPage"
+        text="Next"
+      />
+    </div>
+    <div class="mobile-buttons">
+      <Button
+        @click="prevPage"
+        text="Previous"
+      /><Button
         @click="nextPage"
         text="Next"
       />
@@ -129,51 +137,10 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem;
-}
-
-.movie-poster {
-  width: 200px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.movie-title {
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 2px;
-  color: var(--tertiary-color);
-}
-
-.flex-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 24px;
-}
-
-/* Page Indicator Styling */
-.page-indicator {
-  padding: 10px 16px;
-  background: var(--tertiary-color);
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--primary-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.title {
+  margin: 1rem 0;
   text-align: center;
 }
-
 /* Search Field Styling */
 .search-container {
   width: 100%;
@@ -199,34 +166,72 @@ export default {
 
 .search-input:focus {
   outline: none;
-  border-color: var(--tertiary-color); /* Change this to your preferred color */
-  box-shadow: 0 0 16px rgba(144, 206, 161, 0.6); /* A greenish glow */
+  border-color: var(--tertiary-color);
+  box-shadow: 0 0 16px rgba(144, 206, 161, 0.6);
+}
+
+/* Movie Styling */
+.movie-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.movie-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-around;
+}
+.movie-poster {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.movie-title {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 2px;
+  color: var(--tertiary-color);
+}
+
+.desktop-buttons {
+  display: block;
+}
+
+.mobile-buttons {
+  display: none;
+}
+
+/* Page Indicator Styling */
+.page-indicator {
+  padding: 0.3rem 0;
+  background: var(--tertiary-color);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 @media (max-width: 1024px) {
-  /* Reduce padding and margins to fit better on smaller screens */
-  .container {
-    margin: 0;
-    flex-wrap: wrap;
+  .desktop-buttons {
+    display: none;
   }
-
-  .search-container {
-    padding: 0 10px;
-  }
-
-  .movie-poster {
-    width: 100px;
-    height: 150px;
-  }
-
-  .movie-title {
-    font-size: 0.9rem;
-    max-width: 100px;
-  }
-
-  /* Adjust gap in the movie grid for smaller screens */
-  .flex-wrap {
-    gap: 10px;
+  .mobile-buttons {
+    display: block;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3rem;
   }
 }
 </style>
