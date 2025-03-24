@@ -1,58 +1,55 @@
 <template>
-  <div class="container">
-    <h1 class="title">Popular Movies</h1>
-    <div class="search-container">
-      <input
-        v-model="searchQuery"
-        @input="handleSearch"
-        placeholder="Sök efter film..."
-        class="search-input"
-      />
-    </div>
-    <div class="movie-container">
-      <Button
-        class="desktop-buttons"
-        @click="prevPage"
-        text="Previous"
-      />
-      <div class="movie-grid-container">
-        <div
-          v-for="movie in displayedMovies"
-          :key="movie.id"
-          class="movie-card"
-        >
-          <RouterLink :to="'/movie/' + movie.id">
-            <img
-              :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
-              :alt="movie.title"
-              class="movie-poster"
-            />
-            <h2 class="movie-title">{{ movie.title }}</h2>
-          </RouterLink>
-        </div>
-      </div>
-      <Button
-        class="desktop-buttons"
-        @click="nextPage"
-        text="Next"
-      />
-    </div>
-    <div class="mobile-buttons">
-      <Button
-        @click="prevPage"
-        text="Previous"
-      /><Button
-        @click="nextPage"
-        text="Next"
-      />
-    </div>
-    <div class="page-indicator">Page {{ currentPage }}</div>
+  <div class="search-container">
+    <input
+      v-model="searchQuery"
+      @input="handleSearch"
+      placeholder="Sök efter film..."
+      class="search-input"
+    />
   </div>
+  <div class="movie-container">
+    <Button
+      class="desktop-buttons"
+      @click="prevPage"
+      text="Previous"
+    />
+    <div class="movie-grid-container">
+      <div
+        v-for="movie in displayedMovies"
+        :key="movie.id"
+        class="movie-card"
+      >
+        <RouterLink :to="'/movie/' + movie.id">
+          <img
+            :src="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
+            :alt="movie.title"
+            class="movie-poster"
+          />
+          <h2 class="movie-title">{{ movie.title }}</h2>
+        </RouterLink>
+      </div>
+    </div>
+    <Button
+      class="desktop-buttons"
+      @click="nextPage"
+      text="Next"
+    />
+  </div>
+  <div class="mobile-buttons">
+    <Button
+      @click="prevPage"
+      text="Previous"
+    /><Button
+      @click="nextPage"
+      text="Next"
+    />
+  </div>
+  <div class="page-indicator">Page {{ currentPage }}</div>
 </template>
 
 <script>
 import { getPopularMovies, searchMovies } from '../services/tmdb'; // Lägg till searchMovies-funktionen
-import Button from '../components/Button.vue';
+import Button from './Button.vue';
 
 export default {
   components: {
@@ -132,11 +129,6 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  margin: 1rem 0;
-  text-align: center;
-}
-
 /* Search Field Styling */
 .search-container {
   width: 100%;
